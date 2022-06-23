@@ -20,30 +20,16 @@
 
         android:background="@drawable/border_line" />
 
-    <Button
-        android:id="@+id/startBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-
-        android:text="시작"
-        android:textSize="30sp"
-
-        android:background="@drawable/custom_btn"
-        android:visibility="visible" />
-
     <LinearLayout
         android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_marginTop="30dp" >
 
         <Button
-            android:id="@+id/recordBtn"
+            android:id="@+id/subBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -53,53 +39,18 @@
             android:text="기록"
             android:textSize="30sp"
 
+            android:visibility="gone"
             android:background="@drawable/custom_btn" />
 
         <Button
-            android:id="@+id/stopBtn"
+            android:id="@+id/mainBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_weight="1"
 
-            android:text="일시정지"
-            android:textSize="30sp"
-
-            android:background="@drawable/custom_btn" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/layout2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="gone"
-        android:layout_marginTop="30dp" >
-
-        <Button
-            android:id="@+id/resetBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="1"
-
-            android:text=" 초기화"
-            android:textSize="30sp"
-
-            android:background="@drawable/custom_btn" />
-
-        <Button
-            android:id="@+id/restartBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="1"
-
-            android:text="계속"
+            android:text="시작"
             android:textSize="30sp"
 
             android:background="@drawable/custom_btn" />

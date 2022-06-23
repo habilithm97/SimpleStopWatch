@@ -15,12 +15,16 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Thread timeThread = null;
-    private Boolean isRunning = true;
+    Thread timeThread = null;
+    boolean isRunning = true;
+    int buttonCount = 0;
+    int i = 0;
 
     TextView timeTv;
     Button startBtn;
     LinearLayout layout, layout2;
+
+    Button subBtn, mainBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,67 +33,39 @@ public class MainActivity extends AppCompatActivity {
 
         timeTv = (TextView)findViewById(R.id.timeTv);
 
-        startBtn = (Button)findViewById(R.id.startBtn);
-        startBtn.setOnClickListener(new View.OnClickListener() {
+        subBtn = (Button)findViewById(R.id.subBtn);
+
+        mainBtn = (Button)findViewById(R.id.mainBtn);
+        mainBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startTimer();
-            }
-        });
-
-        layout = (LinearLayout)findViewById(R.id.layout);
-
-        Button recordBtn = (Button)findViewById(R.id.recordBtn);
-
-        Button stopBtn = (Button)findViewById(R.id.stopBtn);
-        stopBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                stopTimer();
-            }
-        });
-
-        layout2 = (LinearLayout)findViewById(R.id.layout2);
-
-        Button resetBtn = (Button)findViewById(R.id.resetBtn);
-        resetBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                resetTimer();
-            }
-        });
-
-        Button restartBtn = (Button)findViewById(R.id.restartBtn);
-        restartBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                restartTimer();
+                if(buttonCount == 0) { // 버튼을 누르지 않은 상태면 스레드 실행
+                    startTimer();
+                } else { // 버튼을 누른 상태면 스레드 일시정지
+                    pauseTimer();
+                }
             }
         });
     }
 
     public void startTimer() {
-        startBtn.setVisibility(View.GONE);
-        layout.setVisibility(View.VISIBLE);
+        subBtn.setVisibility(View.VISIBLE);
+        subBtn.setText("기록");
+        mainBtn.setText("일시정지");
 
         // 스레드를 생성해서 실행함
         timeThread = new Thread(new TimeThread());
         timeThread.start();
+        isRunning = true; // 실행중인가? -> Yes
+        buttonCount++; // 버튼을 누른 상태 1
     }
 
-    public void stopTimer() {
-        layout.setVisibility(View.GONE);
-        layout2.setVisibility(View.VISIBLE);
-    }
+    public void pauseTimer() {
+        subBtn.setText("초기화");
+        mainBtn.setText("계속");
 
-    public void restartTimer() {
-        layout2.setVisibility(View.GONE);
-        layout.setVisibility(View.VISIBLE);
-    }
-
-    public void resetTimer() {
-        layout2.setVisibility(View.GONE);
-        startBtn.setVisibility(View.VISIBLE);
+        isRunning = !isRunning; // 스레드를 멈춤
+        buttonCount--; // 버튼을 누르지 않은 상태 0
     }
 
     // 핸들러를 이용해서 UI를 변경할 수 있음
@@ -109,29 +85,15 @@ public class MainActivity extends AppCompatActivity {
     public class TimeThread implements Runnable {
         @Override
         public void run() {
-            int i = 0;
+            while(isRunning) {
+                Message msg = new Message();
+                msg.arg1 = i++;
+                handler.sendMessage(msg);
 
-            while(true) {
-                while(isRunning) {
-                    Message msg = new Message();
-                    msg.arg1 = i++;
-                    handler.sendMessage(msg);
-
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                        // runOnUiThread() : Runnable 객체에 구현된 코드를 반드시 메인 스레드에서 실행해야할 때 사용하는 메서드
-                        runOnUiThread(new Runnable() { // Runnable 객체를 메인 스레드에서 실행되도록 만드는 메서드로서, 현재 스레드가
-                            // 메인 스레드인지 여부를 검사하여 메인 스레드가 아니라면 post()를 실행하고, 메인 스레드라면 Runnable의 run()을 실행함
-                            @Override
-                            public void run() {
-                                timeTv.setText("");
-                                timeTv.setText("00:00:00.00");
-                            }
-                        });
-                        return;
-                    }
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         }

@@ -2,6 +2,9 @@ package com.example.simplestopwatch;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -12,8 +15,11 @@ import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,9 +28,9 @@ public class MainActivity extends AppCompatActivity {
     int mainButtonCount = 0;
     int i = 0;
 
-    TextView timeTv;
-
+    TextView timeTv, recordsTv;
     Button subBtn, mainBtn;
+    ScrollView scrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +78,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        recordsTv = (TextView)findViewById(R.id.recordsTv);
+        scrollView = (ScrollView)findViewById(R.id.scrollView);
     }
 
     public void startTimer() {
@@ -95,7 +104,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void recordingTime() {
-        Toast.makeText(getApplicationContext(), "기록", Toast.LENGTH_SHORT).show();
+        String currentTime = timeTv.getText().toString();
+        recordsTv.append(currentTime + "\n");
+        scrollView.fullScroll(ScrollView.FOCUS_DOWN);
     }
 
     public void clearTime() {
@@ -104,8 +115,6 @@ public class MainActivity extends AppCompatActivity {
         subBtn.setVisibility(View.GONE);
         mainBtn.setText("시작");
     }
-
-
 
     // 핸들러를 이용해서 UI를 변경할 수 있음
     Handler handler = new Handler() {

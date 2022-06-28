@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     boolean isRunning = true;
     int mainButtonCount = 0;
     int i = 0;
+    int num = 0;
 
     TextView timeTv, recordsTv;
     Button subBtn, mainBtn;
@@ -105,7 +106,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void recordingTime() {
         String currentTime = timeTv.getText().toString();
-        recordsTv.append(currentTime + "\n");
+        num++;
+        recordsTv.append(num + ") " + currentTime + "\n");
         scrollView.fullScroll(ScrollView.FOCUS_DOWN);
     }
 
@@ -124,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
             int mSec = msg.arg1 % 100;
             int sec = (msg.arg1 / 100) % 60;
             int min = (msg.arg1 / 100) / 60;
-            int hour = (msg.arg1 / 100) / 360;
+            int hour = (msg.arg1 / 3600) / 24;
 
            String result = String.format("%02d:%02d:%02d.%02d", hour, min, sec, mSec);
            timeTv.setText(result);

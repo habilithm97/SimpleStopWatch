@@ -114,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
         timeTv.setText("00:00:00.00");
         subBtn.setVisibility(View.GONE);
         mainBtn.setText("시작");
+        recordsTv.setText(null);
     }
 
     // 핸들러를 이용해서 UI를 변경할 수 있음
